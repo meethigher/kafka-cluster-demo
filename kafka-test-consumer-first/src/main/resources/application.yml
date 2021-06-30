@@ -1,0 +1,32 @@
+spring:
+  kafka:
+    ###########��Kafka��Ⱥ��###########
+    bootstrap-servers: 192.168.10.100:9092,192.168.10.101:9092,192.168.10.102:9092
+    #bootstrap-servers: 192.168.10.100:9092
+    # ���Ѷ�
+    consumer:
+      # �Ƿ��Զ��ύoffset
+      enable-auto-commit: false
+      # �ύoffset��ʱ(���յ���Ϣ�����ύoffset)
+      auto-commit-interval: 1000ms
+      # Kafka�ṩ�����л��ͷ����л���
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        # ���ѻỰ��ʱʱ��(�������ʱ��consumerû�з�������,�ͻᴥ��rebalance����)
+        session.timeout.ms: 15000
+        max:
+          poll:
+            interval:
+              ms: 600000
+      group-id: group
+      max-poll-records: 50
+server:
+  servlet:
+    context-path: /first
+  port: 8888
+kafka-config:
+  topic:
+    approval-create-command: approval_create_topic
+    interface-log-create: interface_log_create_topic
+    interface-monitoring-dynamic-allocation: interface_monitoring_dynamic_allocation

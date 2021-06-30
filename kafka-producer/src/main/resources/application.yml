@@ -1,0 +1,28 @@
+spring:
+  kafka:
+    ###########��Kafka��Ⱥ��###########
+    bootstrap-servers: 192.168.10.100:9092,192.168.10.101:9092,192.168.10.102:9092
+    #bootstrap-servers: 192.168.10.100:9092
+    # ������
+    producer:
+      # ���Դ���
+      retries: 0
+      # ������С
+      batch-size: 16384
+      # �����˻�������С
+      buffer-memory: 33554432
+      # Kafka�ṩ�����л��ͷ����л���
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        # �ύ��ʱ
+        linger.ms: 1
+server:
+  servlet:
+    context-path: /producer
+  port: 3333
+kafka-config:
+  topic:
+    approval-create-command: approval_create_topic
+    interface-log-create: interface_log_create_topic
+    interface-monitoring-dynamic-allocation: interface_monitoring_dynamic_allocation
