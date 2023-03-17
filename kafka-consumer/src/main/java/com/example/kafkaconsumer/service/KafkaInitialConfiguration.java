@@ -1,7 +1,6 @@
-package com.example.kafkaproducer;
+package com.example.kafkaconsumer.service;
 
 import org.apache.kafka.clients.admin.NewTopic;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +19,6 @@ public class KafkaInitialConfiguration {
          * 备份数与kafka broker数一致即可
          * 不论消费者或是生产者，都可以初始化topic
          */
-        return new NewTopic(topic1, 1, (short) 1);
+        return new NewTopic(topic1, 3, (short) 1);
     }
 }

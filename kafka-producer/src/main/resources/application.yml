@@ -1,28 +1,24 @@
 spring:
   kafka:
-    ###########��Kafka��Ⱥ��###########
-    bootstrap-servers: 192.168.10.100:9092,192.168.10.101:9092,192.168.10.102:9092
-    #bootstrap-servers: 192.168.10.100:9092
-    # ������
+    ########### Kafka集群节点 ###########
+    #bootstrap-servers: 192.168.10.100:9092,192.168.10.101:9092,192.168.10.102:9092
+    bootstrap-servers: 10.0.0.10:9092
+    # Kafka生产者
     producer:
-      # ���Դ���
+      # 生产者发送失败后重发的次数
       retries: 0
-      # ������С
-      batch-size: 16384
-      # �����˻�������С
-      buffer-memory: 33554432
-      # Kafka�ṩ�����л��ͷ����л���
+      # Kafka key和value的序列化类
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       properties:
-        # �ύ��ʱ
-        linger.ms: 1
-server:
-  servlet:
-    context-path: /producer
-  port: 3333
+        # 提交延时。0表示立即提交。
+        linger.ms: 0
 kafka-config:
+  group:
+    group1: group1
+    group2: group2
+    group3: group3
   topic:
-    approval-create-command: approval_create_topic
-    interface-log-create: interface_log_create_topic
-    interface-monitoring-dynamic-allocation: interface_monitoring_dynamic_allocation
+    topic1: test_topic
+    topic2: group_topic
+
