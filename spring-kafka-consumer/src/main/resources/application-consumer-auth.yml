@@ -1,0 +1,39 @@
+spring:
+  kafka:
+    ########### Kafka集群 ###########
+    #bootstrap-servers: 192.168.10.100:9092,192.168.10.101:9092,192.168.10.102:9092
+    bootstrap-servers: 10.0.0.9:9092
+    # 消费
+    consumer:
+      # 是否开启后台定期提交偏移量
+      enable-auto-commit: false
+      # 自动提交偏移量的间隔
+      auto-commit-interval: 1000ms
+      # Kafka key和value反序列化
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        # 消费者死亡超时的时间(会触发rebalance)
+        session.timeout.ms: 15000
+        # 检查消费者死亡的间隔
+        max:
+          poll:
+            interval:
+              ms: 600000
+      group-id: group
+      max-poll-records: 50
+    # https://blog.csdn.net/weixin_45248492/article/details/132578780
+    # 该操作相当于是将map的properties直接丢给KafkaConsumer构造函数，实例化对象
+    properties:
+      security.protocol: SASL_PLAINTEXT
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="kafka" password="kafka1234";
+
+kafka-config:
+  group:
+    group1: group1
+    group2: group2
+    group3: group3
+  topic:
+    topic1: test_topic
+    topic2: group_topic
