@@ -1,3 +1,4 @@
-# 多Kafka下，同一topic多消费者均衡消费
+project instruction
 
-[kafka集群部署指南，超级有用，我按这个配好的](https://www.cnblogs.com/kentalk/p/kafka-cluster-deploy-guide.html)
+* simple-kafka-demo
+* spring-kafka-demo: Example demo based on Spring framework and [Spring-Kafka](https://github.com/spring-projects/spring-kafka) implementation
