@@ -1,6 +1,6 @@
 package top.meethigher;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
@@ -11,35 +11,26 @@ import java.util.Collections;
 import java.util.Properties;
 
 public class Consumer {
-
     private static final Logger log = LoggerFactory.getLogger(Consumer.class);
+    private final Properties properties;
+    private final String topic;
 
-    public static void main(String[] args) {
-        // 配置消费者属性
-        Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "10.0.0.101:9092,10.0.0.102:9092,10.0.0.103:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "your_consumer_group");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+    public Consumer(Properties properties, String topic) {
+        this.properties = properties;
+        this.topic = topic;
+    }
 
-        // 配置 SASL_PLAINTEXT 认证
-        props.put("security.protocol", "SASL_PLAINTEXT");
-        props.put("sasl.mechanism", "PLAIN");
-        props.put("sasl.jaas.config", "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"alice\" password=\"alice-secret\";");
-
-        // 创建消费者实例
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-
-        // 订阅主题
-        String topic = "meethigher";
-        consumer.subscribe(Collections.singletonList(topic));
-
-        // 消费消息
-        while (true) {
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
-            records.forEach(record -> {
-                log.info("Consumed record with key {} and value {}", record.key(), record.value());
-            });
+    public void consume() throws Exception {
+        try (KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties)) {
+            consumer.subscribe(Collections.singletonList(topic));
+            while (true) {
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+                for (ConsumerRecord<String, String> record : records) {
+                    log.info("consumed record with key={}, value={}",
+                            record.key(),
+                            record.value());
+                }
+            }
         }
     }
 }
