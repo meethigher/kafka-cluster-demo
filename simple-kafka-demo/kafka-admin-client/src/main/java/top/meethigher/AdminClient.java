@@ -1,12 +1,16 @@
 package top.meethigher;
 
+import org.apache.kafka.clients.admin.CreateTopicsResult;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Properties;
 
 public class AdminClient {
+    private static final Logger log = LoggerFactory.getLogger(AdminClient.class);
     private final Properties properties;
 
 
@@ -22,11 +26,14 @@ public class AdminClient {
      */
     public void createTopic(String topicName, int numPartitions, int replicationFactor) {
         try (org.apache.kafka.clients.admin.AdminClient adminClient = KafkaAdminClient.create(properties)) {
-            adminClient.createTopics(Collections.singletonList(
+            CreateTopicsResult createTopicsResult = adminClient.createTopics(Collections.singletonList(
                     new NewTopic(
                             topicName,
                             numPartitions,
                             (short) replicationFactor)));
+            createTopicsResult.all().get();
+        } catch (Exception e) {
+            log.error("create topic error", e);
         }
     }
 
