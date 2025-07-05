@@ -26,9 +26,15 @@ public class Consumer {
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
-                    log.info("consumed record with key={}, value={}",
+                    log.info("consumed record with topic={}, partition={}, offset={}, key={}, value={}, timestamp={}, " +
+                                    "timestampType={}",
+                            record.topic(),
+                            record.partition(),
+                            record.offset(),
                             record.key(),
-                            record.value());
+                            record.value(),
+                            record.timestamp(),
+                            record.timestampType().name());
                 }
             }
         }
